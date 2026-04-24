@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> 奇美醫院攜手資策會打造以人為本的智慧醫療新典範 </title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Microsoft JhengHei", "PingFang TC", "Noto Serif TC", "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4ecf7 100%);
+    min-height: 100vh;
+    color: #333;
+    line-height: 1.6;
+  }
+  .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+  .header { text-align: center; margin-bottom: 50px; padding: 30px 20px; }
+  .header h1 {
+    font-size: 2.5rem;
+    color: #1a3a6c;
+    margin-bottom: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+  .header .subtitle { font-size: 1.1rem; color: #5a6c8a; margin-bottom: 20px; }
+  .header .badge {
+    display: inline-block;
+    background: #1a3a6c;
+    color: #fff;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 28px;
+  }
+  .news-card {
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .news-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+  }
+
+  /* ===== 新聞標題圖片風格（排版海報） ===== */
+  .card-image {
+    width: 100%;
+    height: 210px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 18px 20px;
+    color: #fff;
+  }
+  .card-image::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 85% 15%, rgba(255,255,255,0.25), transparent 50%),
+      radial-gradient(circle at 15% 85%, rgba(0,0,0,0.25), transparent 55%);
+    pointer-events: none;
+  }
+  .card-image::after {
+    content: "";
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    top: 50%;
+    height: 2px;
+    background: rgba(255,255,255,0.5);
+    transform: translateY(-50%);
+  }
+
+  .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+    position: relative;
+  }
+  .date-tag {
+    font-family: "Georgia", "Times New Roman", serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(6px);
+    padding: 3px 10px;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+  .category-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    background: #fff;
+    color: #222;
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+
+  .headline-block {
+    z-index: 2;
+    position: relative;
+    text-align: center;
+    padding: 0 4px;
+  }
+  .quote-mark {
+    font-family: "Georgia", serif;
+    font-size: 2.8rem;
+    line-height: 1;
+    opacity: 0.6;
+    margin-bottom: -6px;
+  }
+  .headline-text {
+    font-size: 1.6rem;
+    font-weight: 900;
+    letter-spacing: 4px;
+    line-height: 1.15;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.25);
+    margin-bottom: 4px;
+  }
+  .headline-sub {
+    font-size: 0.78rem;
+    letter-spacing: 6px;
+    font-weight: 400;
+    opacity: 0.9;
+    font-family: "Georgia", "Times New Roman", serif;
+    font-style: italic;
+  }
+
+  .bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    z-index: 2;
+    position: relative;
+  }
+  .media-label {
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    opacity: 0.85;
+    font-weight: 500;
+  }
+  .media-name-small {
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+  }
+  .index-num {
+    font-family: "Georgia", "Times New Roman", serif;
+    font-size: 2rem;
+    font-weight: 700;
+    font-style: italic;
+    opacity: 0.4;
+    line-height: 1;
+  }
+
+  /* 各媒體品牌色主題 */
+  .theme-cna    { background: linear-gradient(135deg, #c0392b 0%, #78130b 100%); }
+  .theme-udn-m  { background: linear-gradient(135deg, #0077b6 0%, #02315f 100%); }
+  .theme-ltn    { background: linear-gradient(135deg, #27ae60 0%, #0f4a29 100%); }
+  .theme-cts    { background: linear-gradient(135deg, #e67e22 0%, #7f3203 100%); }
+  .theme-udn    { background: linear-gradient(135deg, #34495e 0%, #0b141d 100%); }
+  .theme-pchome { background: linear-gradient(135deg, #e74c3c 0%, #7a1a10 100%); }
+  .theme-yahoo  { background: linear-gradient(135deg, #7d3cf0 0%, #3b147a 100%); }
+  .theme-power  { background: linear-gradient(135deg, #16a085 0%, #074138 100%); }
+  .theme-digi   { background: linear-gradient(135deg, #2c3e50 0%, #000000 100%); }
+  .theme-wearn  { background: linear-gradient(135deg, #d4a017 0%, #6b4c05 100%); }
+  .theme-more   { background: linear-gradient(135deg, #c2185b 0%, #560426 100%); }
+  .theme-posu   { background: linear-gradient(135deg, #00838f 0%, #003138 100%); }
+
+  /* 卡片內文 */
+  .card-body {
+    padding: 22px 22px 24px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .card-source {
+    font-size: 0.85rem;
+    color: #1a3a6c;
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card-source::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #1a3a6c;
+    display: inline-block;
+  }
+  .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #222;
+    line-height: 1.5;
+    margin-bottom: 14px;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .card-desc {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 18px;
+    line-height: 1.55;
+  }
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #1a3a6c 0%, #2c5aa0 100%);
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.25s ease;
+    align-self: flex-start;
+  }
+  .card-link:hover {
+    background: linear-gradient(135deg, #2c5aa0 0%, #3973c4 100%);
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(26,58,108,0.35);
+  }
+  .card-link svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.25s ease;
+  }
+  .card-link:hover svg { transform: translateX(3px); }
+  footer {
+    text-align: center;
+    margin-top: 60px;
+    padding: 30px 20px;
+    color: #5a6c8a;
+    font-size: 0.9rem;
+  }
+  @media (max-width: 640px) {
+    .header h1 { font-size: 1.8rem; }
+    .news-grid { grid-template-columns: 1fr; gap: 20px; }
+    .container { padding: 24px 14px; }
+    .headline-text { font-size: 1.4rem; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>奇美醫院攜手資策會｜全台首套醫療AI人才職能護照</h1>
+      <p class="subtitle">AI賦能關鍵能力，打造以人為本的智慧醫療新典範</p>
+      <span class="badge">2026.04.24</span>
+    </div>
+
+    <div class="news-grid">
+
+      <!-- 1. CNA -->
+      <div class="news-card">
+        <div class="card-image theme-cna">
+          <div class="top-row">
+            <span class="date-tag">2026.04.24</span>
+            <span class="category-tag">NEWS</span>
+          </div>
+          <div class="headline-block">
+            <div class="quote-mark">"</div>
+            <div class="headline-text">中央社</div>
+            <div class="headline-sub">CENTRAL NEWS AGENCY</div>
+          </div>
+          <div class="bottom-row">
+            <span class="media-label">NO. 01</span>
+            <span class="media-name-small">CNA</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-source">中央通訊社</div>
+          <div class="card-title">中央社新聞報導</div>
+          <div class="card-desc">台灣最具代表性的國家級通訊社，提供即時、權威的新聞報導。</div>
+          <a href="https://www.cna.com.tw/news/afe/202604240178.aspx" target="_blank" rel="noopener" class="card-link">
+            前往觀看
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 2. 經濟日報 -->
+      <div class="news-card">
+        <div class="card-image theme-udn-m">
+          <div class="top-row">
+            <span class="date-tag">2026.04.24</span>
+            <span class="category-tag">FINANCE</span>
+          </div>
+          <div class="headline-block">
+            <div class="quote-mark">"</div>
+            <div class="headline-text">經濟日報</div>
+            <div class="headline-sub">ECONOMIC DAILY NEWS</div>
+          </div>
+          <div class="bottom-row">
+            <span class="media-label">NO. 02</span>
+            <span class="media-name-small">MONEY UDN</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-source">經濟日報 Money</div>
+          <div class="card-title">經濟日報財經即時新聞</div>
+          <div class="card-desc">聯合報系專業財經媒體，深入剖析市場趨勢與產業動態。</div>
+          <a href="https://money.udn.com/money/story/5612/9462440?from=edn_newestlist_rank" target="_blank" rel="noopener" class="card-link">
+            前往觀看
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 3. 自由時報 -->
+      <div class="news-card">
+        <div class="card-image theme-ltn">
+          <div class="top-row">
+            <span class="date-tag">2026.04.24</span>
+            <span class="category-tag">HEALTH</span>
+          </div>
+          <div class="headline-block">
+            <div class="quote-mark">"</div>
+            <div class="headline-text">自由時報</div>
+            <div class="headline-sub">LIBERTY TIMES NET</div>
+          </div>
+          <div class="bottom-row">
+            <span class="media-label">NO. 03</span>
+            <span class="media-name-small">LTN HEALTH</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-source">自由時報 健康網</div>
+          <div class="card-title">自由健康網即時報導</div>
+          <div class="card-desc">自由時報健康頻道，提供最新醫療健康資訊與專家觀點。</div>
+          <a href="https://health.ltn.com.tw/article/breakingnews/5414781" target="_blank" rel="noopener" class="card-link">
+            前往觀看
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 4. 華視 -->
+      <div class="news-card">
+        <div class="card-image theme-cts">
+          <div class="top-row">
+            <span class="date-tag">2026.04.24</span>
+            <span class="category-tag">TV NEWS</span>
+          </div>
+          <div class="headline-block">
+            <div class="quote-mark">"</div>
+            <div class="headline-text">華視新聞</div>
+            <div class="headline-sub">CHINESE TELEVISION</div>
+          </div>
+          <div class="bottom-row">
+            <span class="media-label">NO. 04</span>
+            <span class="media-name-small">CTS NEWS</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-source">華視新聞網</div>
+          <div class="card-title">華視財經新聞報導</div>
+          <div class="card-desc">中華電視公司新聞網，提供電視與網路同步的即時新聞。</div>
+          <a href="https://news.cts.com.tw/cna/money/202604/202604243023620.html" target="_blank" rel="noopener" class="card-link">
+            前往觀看
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 5. 聯合新聞網 -->
+      <div class="news-card">
+        <div class="card-image theme-udn">
+          <div class="top-row">
+            <span class="date-tag">2026.04.24</span>
+            <span class="category-tag">GENERAL</span>
+          </div>
+          <div class="headline-block">
+            <div class="quote-mark">"</div>
+            <div class="headline-text">聯合新聞網</div>
+            <div class="headline-sub">UNITED DAILY NEWS</div>
+          </div>
+          <div class="bottom-row">
+            <span class="media-label">NO. 05</span>
+            <span class="media-name-small">UDN</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-source">UDN 聯合新聞網</div>
+          <div class="card-title">聯合新聞網深度報導</div>
+          <div class="card-desc">聯合報系官方新聞網站，涵蓋政治、經濟、社會、文化等多元議題。</div>
+          <a href="https://udn.com/news/story/7240/9462440" target="_blank" rel="noopener" class="card-link">
+            前往觀看
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+     
+      <!-- 6. PChome -->
+      <div class="news-card">
+        <div class="card-image theme-pchome">
+          <div class="top-row">
+            <span class="date-tag">2026.04.24</span>
+            <span class="category-tag">HEALTH</span>
+          </div>
+          <div class="headline-block">
+            <div class="quote-mark">"</div>
+            <div class="headline-text">PChome 新聞</div>
+            <div class="headline-sub">PCHOME HEALTHCARE</div>
+          </div>
+          <div class="bottom-row">
+            <span class="media-label">NO. 07</span>
+            <span class="media-name-small">PCHOME</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-source">PChome 新聞健康頻道</div>
+          <div class="card-title">PChome 醫療健康報導</div>
+          <div class="card-desc">PChome 新聞健康頻道，提供即時健康醫療訊息。</div>
+          <a href="https://news.pchome.com.tw/healthcare/morenews/20260424/index-77700676081287350012.html" target="_blank" rel="noopener" class="card-link">
+            前往觀看
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 7. Yahoo -->
+      <div class="news-card">
+        <div class="card-image theme-yahoo">
+          <div class="top-row">
+            <span class="date-tag">2026.04.24</span>
+            <span class="category-tag">PORTAL</span>
+          </div>
+          <div class="headline-block">
+            <div class="quote-mark">"</div>
+            <div class="headline-text">Yahoo 新聞</div>
+            <div class="headline-sub">YAHOO NEWS TAIWAN</div>
+          </div>
+          <div class="bottom-row">
+            <span class="media-label">NO. 08</span>
+            <span class="media-name-small">YAHOO</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-source">Yahoo 奇摩新聞</div>
+          <div class="card-title">Yahoo 新聞重點報導</div>
+          <div class="card-desc">Yahoo 奇摩新聞聚合平台，涵蓋各大媒體精選報導。</div>
+          <a href="https://reurl.cc/K29vd9" target="_blank" rel="noopener" class="card-link">
+            前往觀看
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 8. 勁報 -->
+      <div class="news-card">
+        <div class="card-image theme-power">
+          <div class="top-row">
+            <span class="date-tag">2026.04.24</span>
+            <span class="category-tag">GENERAL</span>
+          </div>
+          <div class="headline-block">
+            <div class="quote-mark">"</div>
+            <div class="headline-text">勁報</div>
+            <div class="headline-sub">TW POWER NEWS</div>
+          </div>
+          <div class="bottom-row">
+            <span class="media-label">NO. 09</span>
+            <span class="media-name-small">POWER NEWS</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-source">TW Power News 勁報</div>
+          <div class="card-title">勁報新聞網即時報導</div>
+          <div class="card-desc">台灣勁報以在地深耕、全國視野的角度，報導各類新聞議題。</div>
+          <a href="https://twpowernews.com/news_pagein.php?iType=1011&n_id=290398" target="_blank" rel="noopener" class="card-link">
+            前往觀看
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 9. DIGITIMES -->
+      <div class="news-card">
+        <div class="card-image theme-digi">
+          <div class="top-row">
+            <span class="date-tag">2026.04.24</span>
+            <span class="category-tag">TECH</span>
+          </div>
+          <div class="headline-block">
+            <div class="quote-mark">"</div>
+            <div class="headline-text">DIGITIMES</div>
+            <div class="headline-sub">ELECTRONIC TIMES</div>
+          </div>
+          <div class="bottom-row">
+            <span class="media-label">NO. 10</span>
+            <span class="media-name-small">DIGITIMES</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-source">DIGITIMES 電子時報</div>
+          <div class="card-title">DIGITIMES 科技產業新聞</div>
+          <div class="card-desc">亞洲權威科技產業媒體，深入報導半導體、ICT 與智慧醫療趨勢。</div>
+          <a href="https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000753301_KAE4NTI2LWMT9E2ALRHEI&cf=A21" target="_blank" rel="noopener" class="card-link">
+            前往觀看
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 10. 聚財網 -->
+      <div class="news-card">
+        <div class="card-image theme-wearn">
+          <div class="top-row">
+            <span class="date-tag">2026.04.24</span>
+            <span class="category-tag">FINANCE</span>
+          </div>
+          <div class="headline-block">
+            <div class="quote-mark">"</div>
+            <div class="headline-text">聚財網</div>
+            <div class="headline-sub">WEARN NEWS</div>
+          </div>
+          <div class="bottom-row">
+            <span class="media-label">NO. 11</span>
+            <span class="media-name-small">WEARN</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-source">Wearn 聚財網</div>
+          <div class="card-title">聚財網即時財經新聞</div>
+          <div class="card-desc">聚焦投資理財與財經趨勢，提供即時市場資訊。</div>
+          <a href="https://news.wearn.com/c1960025.html" target="_blank" rel="noopener" class="card-link">
+            前往觀看
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 11. 默新聞 -->
+      <div class="news-card">
+        <div class="card-image theme-more">
+          <div class="top-row">
+            <span class="date-tag">2026.04.24</span>
+            <span class="category-tag">ONLINE</span>
+          </div>
+          <div class="headline-block">
+            <div class="quote-mark">"</div>
+            <div class="headline-text">默新聞</div>
+            <div class="headline-sub">MORE NEWS TW</div>
+          </div>
+          <div class="bottom-row">
+            <span class="media-label">NO. 12</span>
+            <span class="media-name-small">MORE NEWS</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-source">More News 默新聞</div>
+          <div class="card-title">默新聞特別報導</div>
+          <div class="card-desc">網路獨立媒體，關注社會多元議題與在地脈動。</div>
+          <a href="https://more-news.tw/595769/" target="_blank" rel="noopener" class="card-link">
+            前往觀看
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 12. 新媒體經紀人 -->
+      <div class="news-card">
+        <div class="card-image theme-posu">
+          <div class="top-row">
+            <span class="date-tag">2026.04.24</span>
+            <span class="category-tag">MEDIA</span>
+          </div>
+          <div class="headline-block">
+            <div class="quote-mark">"</div>
+            <div class="headline-text">新媒體經紀人</div>
+            <div class="headline-sub">POSU MEDIA</div>
+          </div>
+          <div class="bottom-row">
+            <span class="media-label">NO. 13</span>
+            <span class="media-name-small">POSU</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-source">Posu Media 新媒體經紀人</div>
+          <div class="card-title">新媒體經紀人專題報導</div>
+          <div class="card-desc">新媒體專業平台，提供產學合作與機構專題露出。</div>
+          <a href="https://media.posu.tw/uninews_view.php?new_sn=125969" target="_blank" rel="noopener" class="card-link">
+            前往觀看
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <footer>
+      <p>AI Everywhere小組彙編</p>
+    </footer>
+  </div>
+</body>
+</html>
